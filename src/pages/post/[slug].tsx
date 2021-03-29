@@ -36,6 +36,15 @@ interface PostProps {
 export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
 
+  const minutesReading = useMemo(() => {
+    const total = post.data.content.reduce(
+      (acc, content) => RichText.asText(content.body).split(/\W/).length + acc,
+      0
+    );
+
+    return `${Math.ceil(total / 200)} min`;
+  }, [post]);
+
   if (router.isFallback) {
     return <div>Carregando...</div>;
   }
@@ -62,10 +71,11 @@ export default function Post({ post }: PostProps): JSX.Element {
             </span>
             <span>
               <FiClock />
-              {formatDistanceToNow(new Date(post.first_publication_date), {
+              {minutesReading}
+              {/* {formatDistanceToNow(new Date(post.first_publication_date), {
                 addSuffix: true,
                 locale: ptBR,
-              })}
+              })} */}
             </span>
           </div>
           <div className={styles.contentContainer}>

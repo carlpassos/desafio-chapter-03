@@ -34,7 +34,7 @@ const mockedQueryReturn = {
   results: [
     {
       uid: 'como-utilizar-hooks',
-      first_publication_date: '29 mar 2021',
+      first_publication_date: '2021-03-15T19:25:28+0000',
       data: {
         title: 'Como utilizar Hooks',
         subtitle: 'Pensando em sincronização em vez de ciclos de vida',
@@ -43,7 +43,7 @@ const mockedQueryReturn = {
     },
     {
       uid: 'criando-um-app-cra-do-zero',
-      first_publication_date: '29 mar 2021',
+      first_publication_date: '2021-03-25T19:27:35+0000',
       data: {
         title: 'Criando um app CRA do zero',
         subtitle:
@@ -92,7 +92,7 @@ describe('Home', () => {
             results: [
               {
                 uid: 'criando-um-app-cra-do-zero',
-                first_publication_date: '29 mar 2021',
+                first_publication_date: '2021-03-25T19:27:35+0000',
                 data: {
                   title: 'Criando um app CRA do zero',
                   subtitle:
@@ -133,15 +133,15 @@ describe('Home', () => {
 
     screen.getByText('Como utilizar Hooks');
     screen.getByText('Pensando em sincronização em vez de ciclos de vida');
-    // screen.getByText('29 mar 2021');
-    // screen.getByText('Carlos Passos');
+    screen.getByText('15 mar 2021');
+    screen.getByText('Joseph Oliveira');
 
     screen.getByText('Criando um app CRA do zero');
     screen.getByText(
       'Tudo sobre como criar a sua primeira aplicação utilizando Create React App'
     );
-    // screen.getByText('29 mar 2021');
-    // screen.getByText('Carlos Passos');
+    screen.getByText('15 mar 2021');
+    screen.getByText('Danilo Vieira');
   });
 
   it('should be able to navigate to post page after a click', () => {
@@ -176,7 +176,7 @@ describe('Home', () => {
     postsPagination.results = [
       {
         uid: 'como-utilizar-hooks',
-        first_publication_date: '29 mar 2021',
+        first_publication_date: '2021-03-15T19:25:28+0000',
         data: {
           title: 'Como utilizar Hooks',
           subtitle: 'Pensando em sincronização em vez de ciclos de vida',
