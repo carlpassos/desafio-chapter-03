@@ -60,3 +60,61 @@
     text-align: justify;
   }
 }
+
+.footer {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  border-top: 1px solid var(--gray-700);
+  padding-top: 2rem;
+  margin-bottom: 6rem;
+
+  div {
+    padding: 1rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    filter: brightness(0.7);
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 8rem;
+    max-width: 400px;
+
+    h2 {
+      font-size: 1.1rem;
+      transition: all 0.4s;
+    }
+
+    span {
+      color: var(--pink-500);
+      transition: opacity 0.4s, font-size 0.4s;
+    }
+
+    &:hover {
+      filter: brightness(1);
+
+      h2 {
+        font-size: 1.3rem;
+      }
+
+      span {
+        opacity: 0;
+        font-size: 0;
+      }
+    }
+  }
+
+  div:last-child{
+    align-self: flex-end;
+    margin-left: auto;
+    align-items: flex-end;
+
+    h2 {
+      text-align: right;
+    }
+
+  }
+}

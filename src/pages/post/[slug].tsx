@@ -7,6 +7,7 @@ import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { getPrismicClient } from '../../services/prismic';
 
 import commonStyles from '../../styles/common.module.scss';
@@ -16,6 +17,8 @@ import Header from '../../components/Header';
 interface Post {
   first_publication_date: string | null;
   data: {
+    next_post: any;
+    prev_post: any;
     title: string;
     banner: {
       url: string;
@@ -35,6 +38,9 @@ interface PostProps {
 
 export default function Post({ post }: PostProps): JSX.Element {
   const router = useRouter();
+
+  console.log(post.data.next_post?.results[0]);
+  console.log(post.data.prev_post?.results[0]);
 
   const minutesReading = useMemo(() => {
     const total = post.data.content.reduce(
@@ -72,10 +78,6 @@ export default function Post({ post }: PostProps): JSX.Element {
             <span>
               <FiClock />
               {minutesReading}
-              {/* {formatDistanceToNow(new Date(post.first_publication_date), {
-                addSuffix: true,
-                locale: ptBR,
-              })} */}
             </span>
           </div>
           <div className={styles.contentContainer}>
@@ -93,6 +95,25 @@ export default function Post({ post }: PostProps): JSX.Element {
             ))}
           </div>
         </article>
+        <footer className={styles.footer}>
+          {post.data.prev_post.results[0] && (
+            <Link href={`/post/${post.data.prev_post.results[0].uid}`}>
+              <div>
+                <h2>{post.data.prev_post.results[0].data.title}</h2>
+                <span>Post Anterior</span>
+              </div>
+            </Link>
+          )}
+
+          {post.data.next_post.results[0] && (
+            <Link href={`/post/${post.data.next_post.results[0].uid}`}>
+              <div>
+                <h2>{post.data.next_post.results[0].data.title}</h2>
+                <span>Próximo Post</span>
+              </div>
+            </Link>
+          )}
+        </footer>
       </main>
     </>
   );
@@ -119,10 +140,34 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const response = await prismic.getByUID('p', String(slug), {});
 
+  const nextPost = await prismic.query(
+    [
+      Prismic.Predicates.at('document.type', 'p'),
+      Prismic.Predicates.dateAfter(
+        'document.first_publication_date',
+        response.first_publication_date
+      ),
+    ],
+    { pageSize: 1 }
+  );
+
+  const prevPost = await prismic.query(
+    [
+      Prismic.Predicates.at('document.type', 'p'),
+      Prismic.Predicates.dateBefore(
+        'document.first_publication_date',
+        response.first_publication_date
+      ),
+    ],
+    { pageSize: 1 }
+  );
+
   const post = {
     uid: response.uid,
     first_publication_date: response.first_publication_date,
     data: {
+      prev_post: prevPost,
+      next_post: nextPost,
       title: response.data.title,
       subtitle: response.data.subtitle,
       banner: {
